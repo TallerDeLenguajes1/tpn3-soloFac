@@ -29,27 +29,30 @@ void CargarProductos(Cliente ** p_usuario1, int CantidadProductos);
 /*int CantidadPorPrecioUnitario();*/
 
 int main(){
-    Cliente * asiduo;
+    Cliente * asiduo;   //declaro una variable para recibir la direccion del puntero cliente
     
     asiduo = Interfaz();  //Consulta: Es mas recomendable hacer la reserva de memoria en el programa principal y tener siempre el puntero de la memoria reservada ahí?
                                 //Esta bien que haga esto??? Devolver de esta manera el puntero?
 
-    printf("%s", *asiduo->Productos->TipoProducto);
+    printf("Los productos del primer cliente son \n");
+    printf("%d", asiduo->Productos->PrecioUnitario);
+
+    scanf("%c");
 
     return 0;
 }
 
-Cliente * Interfaz(){
+Cliente * Interfaz(){       //Consulta: Se coloca "*" para indiciar que se devuelve una variable del tipo Cliente puntero?
     int NdeClientes;
 
     printf("Ingrese la cantidad de clientes: ");
-    scanf("%d", &NdeClientes);
+    scanf("%d", &NdeClientes);  
 
     Cliente * usuario = (Cliente *) malloc(sizeof(Cliente) * NdeClientes);      //Reserva de memoria para la cantidad total de clientes
 
     CargarClientes(&usuario, NdeClientes);
 
-    return (usuario);
+    return usuario;
 };
 
 void CargarClientes(Cliente ** p_usuario, int NdeClientes){
@@ -82,8 +85,7 @@ void CargarClientes(Cliente ** p_usuario, int NdeClientes){
         
     }
     
-
-    getchar();
+    //* p_usuario = * p_usuario - NdeClientes;
 };
 
 void CargarProductos(Cliente ** p_usuario1, int CantidadProductos){
@@ -96,9 +98,10 @@ void CargarProductos(Cliente ** p_usuario1, int CantidadProductos){
         (* p_usuario1)[0].Productos[j].ProductoID = j + 1;
         (* p_usuario1)[0].Productos[j].Cantidad = 1 + rand() % 11;    // TL♥
         int tamanio = strlen(TiposProductos[aleatorio]);
-        (* p_usuario1)[0].Productos[j].TipoProducto = (char *)malloc(sizeof(tamanio) * sizeof(char *)); //Consulta: Porque size of de tamanio si tamanio tiene la cantidad de caracteres, no seria lo mismo que poner tamanio directamente? porque cada char ocupa un byte?
+        (* p_usuario1)[0].Productos[j].TipoProducto = (char *)malloc(sizeof(tamanio) * sizeof(char *)); //Consulta: Esta bien que se hecha la reserva de memoria en este caso?
         strcpy((* p_usuario1)[0].Productos[j].TipoProducto, TiposProductos[aleatorio]);
         (* p_usuario1)[0].Productos[j].PrecioUnitario = 10 + rand() % 91;
+        ((*p_usuario1)[0].Productos+j);
     }      
 };
 
