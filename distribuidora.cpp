@@ -20,11 +20,11 @@ typedef struct{
     Producto *Productos; //El tamaño de este arreglo depende de la variable  // “CantidadProductosAPedir”
 }Cliente;
 
-Cliente * Interfaz();
+Cliente * Interfaz(int * num);
 
 void CargarClientes(Cliente ** p_usuario, int NdeClientes);
 
-void CargarProductos(Cliente ** p_usuario_aux, int CantidadProductos);
+void CargarProductos(Cliente ** p_usuario, int NdeClientes);
 
 /*int CantidadPorPrecioUnitario();*/
 
@@ -35,28 +35,31 @@ int main(){
     time_t t;
     srand((unsigned) time(&t));
 
-    Cliente * asiduo;   //declaro una variable para recibir la direccion del puntero cliente
-    
-    asiduo = Interfaz();
+    int NdeClientes;
 
-    mostrarClientes(asiduo);
+    Cliente * p_cliente;   //declaro una variable para recibir la direccion del puntero cliente
+    
+    p_cliente = Interfaz(&NdeClientes);
+
+    CargarClientes(&p_cliente, NdeClientes);
+    
+    CargarProductos(&p_cliente, NdeClientes);
+
+    mostrarClientes(p_cliente);
 
     return 0;
 }
 
 
 
-Cliente * Interfaz(){
-
-    int NdeClientes;
+Cliente * Interfaz(int * NdeClientes){  //Realizo ademas la reserva.
 
     printf("Ingrese la cantidad de clientes: ");
-    scanf("%d", &NdeClientes);  
+    scanf("%d", NdeClientes);
 
     Cliente * usuario;
 
-    usuario = (Cliente *) malloc(sizeof(Cliente) * NdeClientes);      //Reserva de memoria para la cantidad total de clientes
-    CargarClientes(&usuario, NdeClientes);
+    usuario = (Cliente *) malloc(sizeof(Cliente) * (* NdeClientes));      //Reserva de memoria para la cantidad total de clientes
 
     return usuario;
 };
@@ -64,7 +67,6 @@ Cliente * Interfaz(){
 
 
 void CargarClientes(Cliente ** p_usuario, int NdeClientes){
-    int CantidadProductosAPedir;
 
     for (int i = 0; i < NdeClientes; i++) //------Cargo los datos del Cliente-------
     {
@@ -81,30 +83,29 @@ void CargarClientes(Cliente ** p_usuario, int NdeClientes){
 
         printf("Ingrese la cantidad de Productos a Pedir: ");
         scanf("%d", &(* p_usuario)[i].CantidadProductosAPedir);
-
-        int CantidadProductos = (* p_usuario)[i].CantidadProductosAPedir;
-        Cliente * p_usuario_aux = (* p_usuario + i);
-
-        CargarProductos(&p_usuario_aux, CantidadProductos);//-------Cargo los datos del Producto----
-
     }
 };
 
-void CargarProductos(Cliente ** p_usuario_aux, int CantidadProductos){
+void CargarProductos(Cliente ** p_usuario, int NdeClientes){
 
-    (* p_usuario_aux)->Productos = (Producto *) malloc(sizeof(Producto) * CantidadProductos);     //Reservo memoria para los Productos del Cliente
-    
-    for (int j = 0; j < CantidadProductos; j++)
+    for (int i = 0; i < NdeClientes; i++)
     {
-        float precio_unitario = 10 + rand() % 91;
-        int aleatorio = rand() % 5;
-        (* p_usuario_aux)->Productos[j].ProductoID = j + 1;
-        (* p_usuario_aux)->Productos[j].Cantidad = 1 + rand() % 11;    // TL♥
-        int tamanio = strlen(TiposProductos[aleatorio]);
-        (* p_usuario_aux)->Productos[j].TipoProducto = (char *)malloc(sizeof(tamanio));
-        strcpy((* p_usuario_aux)->Productos[j].TipoProducto, TiposProductos[aleatorio]);
-        (* p_usuario_aux)->Productos[j].PrecioUnitario = precio_unitario;
-    }      
+        int CantidadProductos = (* p_usuario)[i].CantidadProductosAPedir;
+        (* p_usuario)[i].Productos = (Producto *) malloc(sizeof(Producto) * CantidadProductos);     //Reservo memoria para los Productos del Cliente
+
+        for (int j = 0; j < CantidadProductos; j++)
+        {
+            float precio_unitario = 10 + rand() % 91;
+            int aleatorio = rand() % 5;
+            (* p_usuario)[i].Productos[j].ProductoID = j + 1;
+            (* p_usuario)[i].Productos[j].Cantidad = 1 + rand() % 11;    // TL♥
+            int tamanio = strlen(TiposProductos[aleatorio]);
+            (* p_usuario)[i].Productos[j].TipoProducto = (char *)malloc(sizeof(tamanio));
+            strcpy((* p_usuario)[i].Productos[j].TipoProducto, TiposProductos[aleatorio]);
+            (* p_usuario)[i].Productos[j].PrecioUnitario = precio_unitario;
+        }
+    }
+    
 };
 
 /*
