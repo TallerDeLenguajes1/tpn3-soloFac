@@ -28,6 +28,8 @@ void CargarProductos(Cliente ** p_usuario_aux, int CantidadProductos);
 
 /*int CantidadPorPrecioUnitario();*/
 
+void mostrarClientes(Cliente p_cliente[]);
+
 int main(){
     
     time_t t;
@@ -37,26 +39,7 @@ int main(){
     
     asiduo = Interfaz();
 
-    printf("Probando: ");
-    //printf("El nombre del cliente es", (asiduo)[0].NombreCliente); //aqui me da algo de error de segmentacion
-    //scanf("%c");
-
-    for (int i = 0; i < 3; i++)
-    {
-        Producto * P = asiduo[i].Productos;
-        printf("cliente %s \n", asiduo[i].NombreCliente);
-        for (int j = 0; j < asiduo[i].CantidadProductosAPedir; j++)
-        {
-            printf("Prod: %s \n", P[j].TipoProducto);
-            printf("Prod: %f \n", P[j].PrecioUnitario);
-        }
-        printf("------------- \n");
-
-        printf("\n");
-    }
-    
-
-    scanf("%c");
+    mostrarClientes(asiduo);
 
     return 0;
 }
@@ -100,7 +83,6 @@ void CargarClientes(Cliente ** p_usuario, int NdeClientes){
         scanf("%d", &(* p_usuario)[i].CantidadProductosAPedir);
 
         int CantidadProductos = (* p_usuario)[i].CantidadProductosAPedir;
-        (* p_usuario)[i].Productos = (Producto *) malloc(sizeof(Producto) * CantidadProductos);
         Cliente * p_usuario_aux = (* p_usuario + i);
 
         CargarProductos(&p_usuario_aux, CantidadProductos);//-------Cargo los datos del Producto----
@@ -109,7 +91,8 @@ void CargarClientes(Cliente ** p_usuario, int NdeClientes){
 };
 
 void CargarProductos(Cliente ** p_usuario_aux, int CantidadProductos){
-    //(* p_usuario_aux)->Productos = (Producto *) malloc(sizeof(Producto) * CantidadProductos);     //Reservo memoria para los Productos del Cliente
+
+    (* p_usuario_aux)->Productos = (Producto *) malloc(sizeof(Producto) * CantidadProductos);     //Reservo memoria para los Productos del Cliente
     
     for (int j = 0; j < CantidadProductos; j++)
     {
@@ -128,3 +111,21 @@ void CargarProductos(Cliente ** p_usuario_aux, int CantidadProductos){
 int CantidadPorPrecioUnitario(){
 
 };*/
+
+void mostrarClientes(Cliente p_cliente[]){
+    
+    for (int i = 0; i < 2; i++)
+    {
+        Producto * P = p_cliente[i].Productos;
+        printf("cliente %s \n", p_cliente[i].NombreCliente);
+        for (int j = 0; j < p_cliente[i].CantidadProductosAPedir; j++)
+        {
+            printf("Prod: %s \n", P[j].TipoProducto);
+            printf("Prod: %f \n", P[j].PrecioUnitario);
+        }
+        printf("------------- \n");
+
+        printf("\n");
+    }
+    
+}
