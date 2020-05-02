@@ -26,9 +26,11 @@ void CargarClientes(Cliente ** p_usuario, int NdeClientes);
 
 void CargarProductos(Cliente ** p_usuario, int NdeClientes);
 
-/*int CantidadPorPrecioUnitario();*/
-
 void mostrarClientes(Cliente p_cliente[]);
+
+float CantidadPorPrecioUnitario(Producto P);
+
+
 
 int main(){
     
@@ -108,25 +110,33 @@ void CargarProductos(Cliente ** p_usuario, int NdeClientes){
     
 };
 
-/*
-int CantidadPorPrecioUnitario(){
-
-};*/
-
 void mostrarClientes(Cliente p_cliente[]){
     
     for (int i = 0; i < 2; i++)
     {
         Producto * P = p_cliente[i].Productos;
-        printf("cliente %s \n", p_cliente[i].NombreCliente);
+
+        float total = 0, costoProductos;
+
+        printf("\nCliente: %s \n\n", p_cliente[i].NombreCliente);
+
         for (int j = 0; j < p_cliente[i].CantidadProductosAPedir; j++)
         {
-            printf("Prod: %s \n", P[j].TipoProducto);
-            printf("Prod: %f \n", P[j].PrecioUnitario);
+            printf("ID: %d \n", P[j].ProductoID);
+            printf("Cantidad: %d \n", P[j].Cantidad);
+            printf("Producto: %s \n", P[j].TipoProducto);
+            printf("Precio: %f \n", P[j].PrecioUnitario);
+            costoProductos = CantidadPorPrecioUnitario(P[j]);
+            printf("----------------- \n");
+            total = total + costoProductos;
         }
-        printf("------------- \n");
 
-        printf("\n");
+        printf("Total a pagar: $%f\n\n", total);
     }
     
 }
+
+
+float CantidadPorPrecioUnitario(Producto P){
+    return P.Cantidad * P.PrecioUnitario;
+};
